@@ -1,0 +1,10 @@
+flask
+flask_cors
+flask_validator
+yfinance
+pandas
+numpy
+scikit-learn
+tensorflow
+celery
+redis

@@ -1,0 +1,38 @@
+version: '3'
+services:
+  app:
+    container_name: backend_app
+    build: 
+      context: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+      - celery
+    networks:
+      - backend
+    volumes:
+      - ./models:/app/models
+
+  redis:
+    container_name: backend_redis
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  celery:
+    container_name: backend_celery
+    build: .
+    depends_on:
+      - redis
+    command: celery -A api.celery worker --loglevel=info
+    networks:
+      - backend
+    volumes:
+      - ./models:/app/models
+
+networks:
+  backend:
+    driver: bridge
